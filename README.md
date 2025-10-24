@@ -18,8 +18,9 @@ A small RESTful API built with **Node.js** and **Express** that stores data in a
 ```
 ├── DATABASE/
 │   └── books.js        # array-of-books sample data (export default [...])
-├── logic.js            # middleware / REST logic (GET implemented)
-├── server.js           # Express server setup and route wiring
+├── src
+|   ├── logic.js        # middleware / REST logic (GET implemented)
+|   └── server.js       # Express server setup and route wiring
 ├── .env                # Optional: PORT=8000
 └── README.md           # This file
 ```
