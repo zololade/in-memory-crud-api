@@ -31,14 +31,17 @@ export function postHandler(req, res, next) {
 //read
 //use get
 export function getHandler(req, res, next) {
-  let userRequestId = req.query.id;
-  log(userRequestId);
+  let userRequestId = req.params.id.split(",").map(Number);
+
   if (!userRequestId) throw new Error("Query Id was not specified");
-  if (!Array.isArray(userRequestId)) {
-    req.userRequest = books[userRequestId - 1];
+
+  if (userRequestId.length === 1) {
+    req.userRequest = books[userRequestId[0] - 1];
+
     next();
   } else {
     req.userRequest = [];
+
     for (let value of userRequestId) {
       if (isNaN(value))
         throw new Error("An Id that is not a number was encountered");

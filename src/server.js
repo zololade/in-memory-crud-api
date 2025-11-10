@@ -17,7 +17,7 @@ app.post("/", postHandler, (req, res) => {
   }
 });
 
-app.get("/", getHandler, (req, res) => {
+app.get("/:id", getHandler, (req, res) => {
   if (req.userRequest) {
     res.send(req.userRequest);
   } else {
