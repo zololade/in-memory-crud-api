@@ -8,21 +8,21 @@ import {
   deleteHandler,
 } from "./logic.js";
 
-const path = process.env.PORT ?? 8000;
+const port = process.env.PORT ?? 8000;
 let app = express();
 app.use(express.json());
 
-app.post("/", postHandler, (req, res) => {
+app.post("/books", postHandler, (req, res) => {
   res.send(
     `the data:${JSON.stringify(req.modifiedData)} have been posted`
   );
 });
 
-app.get("/:id", getHandler, (req, res) => {
+app.get("/books/:id", getHandler, (req, res) => {
   res.send(req.userRequest);
 });
 
-app.patch("/:id", updateHandler, (req, res) => {
+app.patch("/books/:id", updateHandler, (req, res) => {
   res.send(
     `the data id:${
       req.params.id
@@ -30,15 +30,16 @@ app.patch("/:id", updateHandler, (req, res) => {
   );
 });
 
-app.delete("/:id", deleteHandler, (req, res) => {
+app.delete("/books/:id", deleteHandler, (req, res) => {
   res.send(`the data id:${req.params.id} have been deleted`);
 });
 
 app.use((err, req, res, next) => {
-  console.error("Caught by Express:", err);
-  res.status(500).send(`${err}`);
+  const status = err.message?.includes("not found") ? 404 : 400;
+  error("Caught by Express:", err.message);
+  res.status(status).json({ error: err.message });
 });
 
-app.listen(path, () => {
-  log(`server is up and running on http://localhost:${path}`);
+app.listen(port, () => {
+  log(`Server running → http://localhost:${port}`);
 });
