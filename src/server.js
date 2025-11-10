@@ -1,40 +1,37 @@
 import "dotenv/config";
 import express, { json } from "express";
 import { log, error } from "node:console";
-import { getHandler, postHandler, updateHandler } from "./logic.js";
+import {
+  getHandler,
+  postHandler,
+  updateHandler,
+  deleteHandler,
+} from "./logic.js";
 
 const path = process.env.PORT ?? 8000;
 let app = express();
 app.use(express.json());
 
 app.post("/", postHandler, (req, res) => {
-  if (req.body) {
-    res.send(
-      `the data:${JSON.stringify(req.modifiedData)} have been posted`
-    );
-  } else {
-    res.send(`something is wrong`);
-  }
+  res.send(
+    `the data:${JSON.stringify(req.modifiedData)} have been posted`
+  );
 });
 
 app.get("/:id", getHandler, (req, res) => {
-  if (req.userRequest) {
-    res.send(req.userRequest);
-  } else {
-    res.send("something went wrong");
-  }
+  res.send(req.userRequest);
 });
 
 app.patch("/:id", updateHandler, (req, res) => {
-  if (req.body) {
-    res.send(
-      `the data id:${
-        req.params.id
-      } have been updated with ${JSON.stringify(req.dataUnderReview)}`
-    );
-  } else {
-    res.send(`something is wrong`);
-  }
+  res.send(
+    `the data id:${
+      req.params.id
+    } have been updated with ${JSON.stringify(req.dataUnderReview)}`
+  );
+});
+
+app.delete("/:id", deleteHandler, (req, res) => {
+  res.send(`the data id:${req.params.id} have been deleted`);
 });
 
 app.use((err, req, res, next) => {
