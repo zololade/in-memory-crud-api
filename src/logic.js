@@ -6,12 +6,33 @@ import books from "../DATABASE/books.js";
 */
 //create
 //use post
+export function postHandler(req, res, next) {
+  // validate data
+  let incomingData = req.body;
+  if (!incomingData.title || incomingData.title === "") {
+    throw new Error("empty book title");
+  }
+  //new Id
+  incomingData.id = books.length ? books[books.length - 1].id + 1 : 1;
+  //   expected data body
+  req.modifiedData = {
+    id: incomingData.id,
+    title: incomingData.title,
+    author: incomingData.author?.trim() || "unknown",
+    year: incomingData.year || "unknown",
+    genre: incomingData.genre?.trim() || "unknown",
+  };
+
+  // add and return data
+  books.push(req.modifiedData);
+  next();
+}
 
 //read
 //use get
 export function getHandler(req, res, next) {
   let userRequestId = req.query.id;
-  console.log(userRequestId);
+  log(userRequestId);
   if (!userRequestId) throw new Error("Query Id was not specified");
   if (!Array.isArray(userRequestId)) {
     req.userRequest = books[userRequestId - 1];

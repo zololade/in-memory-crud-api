@@ -1,11 +1,21 @@
 import "dotenv/config";
 import express, { json } from "express";
 import { log, error } from "node:console";
-import { getHandler } from "./logic.js";
+import { getHandler, postHandler } from "./logic.js";
 
 const path = process.env.PORT ?? 8000;
 let app = express();
 app.use(express.json());
+
+app.post("/", postHandler, (req, res) => {
+  if (req.body) {
+    res.send(
+      `the data:${JSON.stringify(req.modifiedData)} have been posted`
+    );
+  } else {
+    res.send(`something is wrong`);
+  }
+});
 
 app.get("/", getHandler, (req, res) => {
   if (req.userRequest) {
@@ -17,7 +27,7 @@ app.get("/", getHandler, (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error("Caught by Express:", err);
-  res.status(500).send("Something broke");
+  res.status(500).send(`${err}`);
 });
 
 app.listen(path, () => {
