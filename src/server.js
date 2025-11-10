@@ -26,7 +26,7 @@ app.patch("/:id", updateHandler, (req, res) => {
   res.send(
     `the data id:${
       req.params.id
-    } have been updated with ${JSON.stringify(req.dataUnderReview)}`
+    } have been updated with ${JSON.stringify(req.updatedBook)}`
   );
 });
 

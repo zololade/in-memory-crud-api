@@ -72,13 +72,18 @@ export function updateHandler(req, res, next) {
 //delete
 //use delete
 export function deleteHandler(req, res, next) {
-  // const incomingId = parseInt(req.params.id);
-  // const index = books.findIndex((item) => item.id === incomingId);
+  let userRequestId = req.params.id.split(",").map(Number);
+  let filteredBooks = books.filter(
+    (item) => !userRequestId.includes(item.id)
+  );
+  books.length = 0; // empty the array
+  books.push(...filteredBooks); // add new elements
 
-  // if (index === -1) throw new Error("Book not found");
-  // const incomingBody = req.body;
-  // books[index] = { ...books[index], ...incomingBody };
+  // update id
+  books.forEach((item, index) => {
+    item.id = index + 1;
+  });
+  log(books);
 
-  // req.updatedBook = books[index];
   next();
 }
