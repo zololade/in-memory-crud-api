@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { json } from "express";
 import { log, error } from "node:console";
-import { getHandler, postHandler } from "./logic.js";
+import { getHandler, postHandler, updateHandler } from "./logic.js";
 
 const path = process.env.PORT ?? 8000;
 let app = express();
@@ -22,6 +22,18 @@ app.get("/", getHandler, (req, res) => {
     res.send(req.userRequest);
   } else {
     res.send("something went wrong");
+  }
+});
+
+app.patch("/:id", updateHandler, (req, res) => {
+  if (req.body) {
+    res.send(
+      `the data id:${
+        req.params.id
+      } have been updated with ${JSON.stringify(req.dataUnderReview)}`
+    );
+  } else {
+    res.send(`something is wrong`);
   }
 });
 

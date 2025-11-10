@@ -54,6 +54,17 @@ export function getHandler(req, res, next) {
 
 //update
 //use update
+export function updateHandler(req, res, next) {
+  const incomingId = parseInt(req.params.id);
+  const index = books.findIndex((item) => item.id === incomingId);
+
+  if (index === -1) throw new Error("Book not found");
+  const incomingBody = req.body;
+  books[index] = { ...books[index], ...incomingBody };
+
+  req.updatedBook = books[index];
+  next();
+}
 
 //delete
 //use delete
