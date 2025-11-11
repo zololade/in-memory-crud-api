@@ -6,33 +6,55 @@ import {
   postHandler,
   updateHandler,
   deleteHandler,
-} from "./logic.js";
+} from "./middleware/logic.js";
+import schema from "./middleware/validation.js";
+import { BooksId, PostObj } from "./schma/schema.js";
 
 const port = process.env.PORT ?? 8000;
 let app = express();
 app.use(express.json());
 
-app.post("/books", postHandler, (req, res) => {
-  res.send(
-    `the data:${JSON.stringify(req.modifiedData)} have been posted`
-  );
-});
+app.post(
+  "/books",
+  schema(PostObj, "body"),
+  postHandler,
+  (req, res) => {
+    res.send(
+      `the data:${JSON.stringify(req.modifiedData)} have been posted`
+    );
+  }
+);
 
-app.get("/books/:id", getHandler, (req, res) => {
-  res.send(req.userRequest);
-});
+app.get(
+  "/books/:id",
+  schema(BooksId, "params"),
+  getHandler,
+  (req, res) => {
+    res.send(req.userRequest);
+  }
+);
 
-app.patch("/books/:id", updateHandler, (req, res) => {
-  res.send(
-    `the data id:${
-      req.params.id
-    } have been updated with ${JSON.stringify(req.updatedBook)}`
-  );
-});
+app.patch(
+  "/books/:id",
+  schema(BooksId, "params"),
+  updateHandler,
+  (req, res) => {
+    res.send(
+      `the data id:${
+        req.params.id
+      } have been updated with ${JSON.stringify(req.updatedBook)}`
+    );
+  }
+);
 
-app.delete("/books/:id", deleteHandler, (req, res) => {
-  res.send(`the data id:${req.params.id} have been deleted`);
-});
+app.delete(
+  "/books/:id",
+  schema(BooksId, "params"),
+  deleteHandler,
+  (req, res) => {
+    res.status(204);
+  }
+);
 
 app.use((err, req, res, next) => {
   const status = err.message?.includes("not found") ? 404 : 400;

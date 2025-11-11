@@ -1,5 +1,5 @@
 import { log, error } from "node:console";
-import books from "../DATABASE/books.js";
+import books from "../../DATABASE/books.js";
 
 /*
 ###RESTful api logic/middleware and their corresponding api###
@@ -31,7 +31,7 @@ export function postHandler(req, res, next) {
 //read
 //use get
 export function getHandler(req, res, next) {
-  let userRequestId = req.params.id.split(",").map(Number);
+  let userRequestId = req.params.id;
 
   if (!userRequestId) throw new Error("Query Id was not specified");
 
@@ -72,7 +72,8 @@ export function updateHandler(req, res, next) {
 //delete
 //use delete
 export function deleteHandler(req, res, next) {
-  let userRequestId = req.params.id.split(",").map(Number);
+  let userRequestId = req.params.id;
+  log(userRequestId);
   let filteredBooks = books.filter(
     (item) => !userRequestId.includes(item.id)
   );
