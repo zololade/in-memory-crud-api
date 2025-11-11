@@ -1,5 +1,5 @@
 import { log, error } from "node:console";
-import books from "../../DATABASE/books.js";
+import books from "../database/books.js";
 
 /*
 ###RESTful api logic/middleware and their corresponding api###

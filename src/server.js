@@ -9,7 +9,7 @@ import {
   deleteHandler,
 } from "./middleware/logic.js";
 import schema from "./middleware/validation.js";
-import { BooksId, PostObj } from "./schma/schema.js";
+import { BooksId, PostObj } from "./schema/schema.js";
 
 const port = process.env.PORT ?? 8000;
 let app = express();
