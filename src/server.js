@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express, { json } from "express";
+import cors from "cors";
 import { log, error } from "node:console";
 import {
   getHandler,
@@ -13,7 +14,7 @@ import { BooksId, PostObj } from "./schma/schema.js";
 const port = process.env.PORT ?? 8000;
 let app = express();
 app.use(express.json());
-
+app.use(cors());
 app.post(
   "/books",
   schema(PostObj, "body"),
@@ -52,7 +53,7 @@ app.delete(
   schema(BooksId, "params"),
   deleteHandler,
   (req, res) => {
-    res.status(204);
+    res.status(204).end();
   }
 );
 
